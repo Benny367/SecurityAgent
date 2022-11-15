@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Security Agent</string>
+    <string name="security_agent">Security Agent</string>
+    <string name="einstellungen">Einstellungen</string>
+    <string name="notizen"><![CDATA[< Notizen]]></string>
+    <string name="bild_lokal_speichern">Bild lokal speichern</string>
+    <string name="security_manager">Security Manager</string>
 </resources>
