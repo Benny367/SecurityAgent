@@ -2,7 +2,20 @@
     <string name="app_name">Security Agent</string>
     <string name="security_agent">Security Agent</string>
     <string name="einstellungen">Einstellungen</string>
-    <string name="notizen"><![CDATA[< Notizen]]></string>
+    <string name="notizenButton"><![CDATA[< Notizen]]></string>
     <string name="bild_lokal_speichern">Bild lokal speichern</string>
     <string name="security_manager">Security Manager</string>
+    <string name="securityAgent">Security Agent</string>
+    <string name="bildLokalSpeichern">Bild lokal speichern</string>
+    <string name="deineEmail">Deine E-Mail:</string>
+    <string name="bearbeitenString">Bearbeiten</string>
+    <string name="exampleEmail">email@example.com</string>
+    <string name="anzVersuche">Anzahl Versuche:</string>
+    <string name="zurueckNotizenButton"><![CDATA[< Notizen]]></string>
+    <string name="einstellungenTitle">Einstellungen</string>
+    <string name="data_manager">Data Manager</string>
+    <string name="speichern">Speichern</string>
+    <string name="notizen">Notizen</string>
+    <string name="schreibe_hier">Schreibe hier...</string>
+    <string name="settings">Settings</string>
 </resources>

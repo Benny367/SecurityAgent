@@ -7,10 +7,69 @@
     tools:context=".NotizenActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/dataManagerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="notizen"
-        tools:layout_editor_absoluteX="181dp"
-        tools:layout_editor_absoluteY="174dp" />
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/data_manager"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="69dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataManagerTitle"
+        app:srcCompat="@drawable/logo" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/settingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="339dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:backgroundTint="#6804EC"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/settings_icon"
+        android:contentDescription="@string/settings" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName6"
+        android:layout_width="wrap_content"
+        android:layout_height="50sp"
+        android:ems="14"
+        android:inputType="textPersonName"
+        android:text="@string/notizen"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="322dp" />
+
+    <Button
+        android:id="@+id/speichernButton"
+        android:layout_width="wrap_content"
+        android:layout_height="50sp"
+        android:text="@string/speichern"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="293dp"
+        tools:layout_editor_absoluteY="322dp" />
+
+    <EditText
+        android:layout_width="411dp"
+        android:layout_height="310dp"
+        android:layout_marginTop="3dp"
+        android:hint="@string/schreibe_hier"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:maxLines="10"
+        android:minLines="6"
+        android:scrollbars="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName6" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
