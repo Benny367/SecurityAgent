@@ -7,6 +7,14 @@ public class Benutzer {
     private boolean aktiv;
     private String passwort;
 
+    public Benutzer(int anzVersuche, String email, boolean lokalSpeichern, boolean aktiv, String passwort) {
+        this.anzVersuche = anzVersuche;
+        this.email = email;
+        this.lokalSpeichern = lokalSpeichern;
+        this.aktiv = aktiv;
+        this.passwort = passwort;
+    }
+
     public int getAnzVersuche() {
         return anzVersuche;
     }
