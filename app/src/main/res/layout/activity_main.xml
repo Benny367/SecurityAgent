@@ -7,144 +7,37 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/buttonPWAendern"
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="264dp"
-        android:layout_marginTop="288dp"
+        android:layout_marginTop="164dp"
         android:onClick="onclick"
         android:text="Anmelden"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/PWAendernTextId"
-        android:layout_width="98dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="28dp"
+        android:id="@+id/anmeldenTextId"
+        android:layout_width="104dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="32dp"
         android:text="Anmelden"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/textPW"
-        android:layout_width="190dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="228dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PWAendernTextId" />
-
-    <ImageView
-        android:id="@+id/logoId"
+        android:id="@+id/editTextTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="100dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PWAendernTextId"
-        app:srcCompat="@drawable/logo" />
+        app:layout_constraintTop_toBottomOf="@+id/anmeldenTextId" />
 
-    <ImageView
-        android:id="@+id/kreisZahl3"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="24dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toEndOf="@+id/kreisZahl2"
-        app:layout_constraintTop_toBottomOf="@+id/buttonPWAendern"
-        app:srcCompat="@drawable/_3img" />
-
-    <ImageView
-        android:id="@+id/kreisZahl2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="24dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toEndOf="@+id/kreisZahl1"
-        app:layout_constraintTop_toBottomOf="@+id/buttonPWAendern"
-        app:srcCompat="@drawable/_2img" />
-
-    <ImageView
-        android:id="@+id/kreisZahl1"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textPW"
-        app:srcCompat="@drawable/_1img" />
-
-    <ImageView
-        android:id="@+id/kreisZahl4"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/kreisZahl1"
-        app:srcCompat="@drawable/_4img" />
-
-    <ImageView
-        android:id="@+id/kreisZahl5"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toEndOf="@+id/kreisZahl4"
-        app:layout_constraintTop_toBottomOf="@+id/kreisZahl2"
-        app:srcCompat="@drawable/_5img" />
-
-    <ImageView
-        android:id="@+id/kreisZahl6"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toEndOf="@+id/kreisZahl5"
-        app:layout_constraintTop_toBottomOf="@+id/kreisZahl3"
-        app:srcCompat="@drawable/_6img" />
-
-    <ImageView
-        android:id="@+id/kreisZahl7"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/kreisZahl4"
-        app:srcCompat="@drawable/_7img" />
-
-    <ImageView
-        android:id="@+id/kreisZahl8"
-        android:layout_width="95dp"
-        android:layout_height="95dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toEndOf="@+id/kreisZahl7"
-        app:layout_constraintTop_toBottomOf="@+id/kreisZahl5"
-        app:srcCompat="@drawable/_8img" />
-
-    <ImageView
-        android:id="@+id/kreisZahl9"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toEndOf="@+id/kreisZahl8"
-        app:layout_constraintTop_toBottomOf="@+id/kreisZahl6"
-        app:srcCompat="@drawable/_9img" />
 </androidx.constraintlayout.widget.ConstraintLayout>
