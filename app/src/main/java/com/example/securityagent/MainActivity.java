@@ -4,13 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import json.DataHandler;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+
+import json.Benutzer;
+import json.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,12 +32,15 @@ public class MainActivity extends AppCompatActivity {
     private Button anmeldeButton;
     private EditText pwText;
 
-    private int anzMaxFehlversuche = 0;
+    private String passwort;
+    private int anzMaxFehlversuche;
     private int anzAktuelleVersuche = 0;
 
     //Toasts
     Toast pwFalschToast;
     Toast fotoGemachtToast;
+
+    private Benutzer aktuellerBenutzer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +59,22 @@ public class MainActivity extends AppCompatActivity {
         erstelleListener(kreisZahl8, R.id.kreisZahl8AN, "8");
         erstelleListener(kreisZahl9, R.id.kreisZahl9AN, "9");
 
+        // JSON lesen
+        String jsonString = Utils.leseBenutzer(this, "user.json");
+        Benutzer[] benutzer = new Gson().fromJson(jsonString, Benutzer[].class);
+        aktuellerBenutzer = benutzer[0];
+
+        // Benutzer-Attribute initialisieren
+        anzMaxFehlversuche = aktuellerBenutzer.getAnzVersuche();
+        passwort = aktuellerBenutzer.getPasswort();
+
         // Toasts initialisieren
         pwFalschToast = Toast.makeText(this, "Passwort fehlerhaft", Toast.LENGTH_SHORT);
         fotoGemachtToast = Toast.makeText(this, "Ein Foto von dir wurde gemacht", Toast.LENGTH_SHORT);
     }
 
-    public void anmeldenOnClick(View view) {
-        anzMaxFehlversuche = Integer.parseInt(getString(R.string.anzFehlversuche));
-        DataHandler.leseBenutzer();
-
-        if(pwText.getText().toString().equals(getString(R.string.passwort))){
+    public void anmeldenOnClick(View view){
+        if(pwText.getText().toString().equals(passwort)) {
             Intent activity = new Intent(this, NotizenActivity.class);
             startActivity(activity);
         } else {
