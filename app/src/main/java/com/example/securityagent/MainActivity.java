@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import json.DataHandler;
+
 public class MainActivity extends AppCompatActivity {
 
     private ImageView kreisZahl1;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void anmeldenOnClick(View view) {
         anzMaxFehlversuche = Integer.parseInt(getString(R.string.anzFehlversuche));
+        DataHandler.leseBenutzer();
 
         if(pwText.getText().toString().equals(getString(R.string.passwort))){
             Intent activity = new Intent(this, NotizenActivity.class);

@@ -1,11 +1,25 @@
 package json;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class DataHandler {
     private static List<Benutzer> benutzerList;
@@ -19,30 +33,34 @@ public class DataHandler {
      * @return list of participant
      */
     public static List<Benutzer> leseBenutzer() {
-        return getBenutzer();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            leseBenutzerJSON();
+        }
+        return null;
     }
 
     public static void erstelleBenutzer(Benutzer benutzer) {
-        getBenutzer().add(benutzer);
-        schreibeBenutzerJSON();
+        //getBenutzer().add(benutzer);
+        //schreibeBenutzerJSON();
     }
 
     public static void updateBenutzer() {
-        schreibeBenutzerJSON();
+        //schreibeBenutzerJSON();
     }
 
     /**
      * reads the disciplines from the JSON-File
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private static void leseBenutzerJSON() {
         try {
             byte[] jsonData = Files.readAllBytes(
-                    Paths.get("path")
-            );
+                    Paths.get("C:\\Users\\benja\\AndroidStudioProjects\\SecurityAgent\\app\\src\\main\\java\\json\\user.json"));
             ObjectMapper objectMapper = new ObjectMapper();
-            Discipline[] disciplines = objectMapper.readValue(jsonData, Discipline[].class);
-            for (Discipline d : disciplines) {
-                getDisciplineList().add(d);
+            Benutzer[] benutzer = objectMapper.readValue(jsonData, Benutzer[].class);
+            for (Benutzer b : benutzer) {
+                getBenutzer().add(b);
+                System.out.println(Arrays.toString(benutzer));
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -50,25 +68,13 @@ public class DataHandler {
     }
 
     private static void schreibeBenutzerJSON() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectWriter objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
-        FileOutputStream fileOutputStream;
-        Writer fileWriter;
 
-        String bookPath = Config.getProperty("disciplineJSON");
-        try {
-            fileOutputStream = new FileOutputStream(bookPath);
-            fileWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8));
-            objectWriter.writeValue(fileWriter, getBenutzer());
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
 
     private static List<Benutzer> getBenutzer() {
         if (benutzerList == null) {
             setBenutzer(new ArrayList<>());
-            leseBenutzerJSON();
+            //leseBenutzerJSON();
         }
         return benutzerList;
     }
