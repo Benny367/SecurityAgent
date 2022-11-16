@@ -22,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50sp"
         android:layout_marginTop="50dp"
+        android:onClick="einstellungenOnClick"
         android:text="@string/zurueckNotizenButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -48,13 +49,14 @@
         app:layout_constraintTop_toBottomOf="@+id/logo">
 
         <Switch
-            android:id="@+id/SecurityManagerSwitch"
+            android:id="@+id/securityManagerSwitch"
             android:layout_width="match_parent"
             android:layout_height="50sp"
             android:text="@string/securityAgent"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <Switch
+            android:id="@+id/lokalSwitch"
             android:layout_width="match_parent"
             android:layout_height="50sp"
             android:text="@string/bildLokalSpeichern"
@@ -126,7 +128,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/pwAendern"
+        android:id="@+id/pwAendernButtonEIN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="114dp"
