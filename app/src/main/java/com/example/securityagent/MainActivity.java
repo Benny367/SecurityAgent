@@ -3,6 +3,7 @@ package com.example.securityagent;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 import json.Benutzer;
 import json.Utils;
@@ -48,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         pwText = findViewById(R.id.textAnmeldenId);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("benutzerSpeichern", MODE_PRIVATE);
+        if(sharedPreferences.getString("Benutzer", "DEFAULT").equals("DEFAULT")){
+            Intent activity = new Intent(this, RegistrierenActivity.class);
+            startActivity(activity);
+        } else {
+            ladeBenutzer();
+        }
+
         // Buttons mit Zahlen initialisieren
         erstelleListener(kreisZahl1, R.id.kreisZahl1AN, "1");
         erstelleListener(kreisZahl2, R.id.kreisZahl2AN, "2");
@@ -58,11 +69,6 @@ public class MainActivity extends AppCompatActivity {
         erstelleListener(kreisZahl7, R.id.kreisZahl7AN, "7");
         erstelleListener(kreisZahl8, R.id.kreisZahl8AN, "8");
         erstelleListener(kreisZahl9, R.id.kreisZahl9AN, "9");
-
-        // JSON lesen
-        String jsonString = Utils.leseBenutzer(this, "user.json");
-        Benutzer[] benutzer = new Gson().fromJson(jsonString, Benutzer[].class);
-        aktuellerBenutzer = benutzer[0];
 
         // Benutzer-Attribute initialisieren
         anzMaxFehlversuche = aktuellerBenutzer.getAnzVersuche();
@@ -101,5 +107,14 @@ public class MainActivity extends AppCompatActivity {
                 pwText.setText(aktuellerWert);
             }
         });
+    }
+
+    public void ladeBenutzer(){
+        SharedPreferences sharedPreferences = getSharedPreferences("benutzerSpeichern", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("Benutzer", null);
+        Type type = new TypeToken<Benutzer>(){}.getType();
+
+        aktuellerBenutzer = gson.fromJson(json, type);
     }
 }
