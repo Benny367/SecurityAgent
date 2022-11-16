@@ -13,7 +13,14 @@
         android:theme="@style/Theme.SecurityAgent"
         tools:targetApi="31">
         <activity
-            android:name=".PWAendern"
+            android:name=".RegistrierenActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".PWAendernActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

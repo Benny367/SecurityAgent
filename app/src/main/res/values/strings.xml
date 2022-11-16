@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Security Agent</string>
+    <string name="passwort">123456</string>
+    <string name="anzFehlversuche">3</string>
 </resources>
