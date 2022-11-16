@@ -31,33 +31,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="339dp"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_marginTop="56dp"
         android:backgroundTint="#6804EC"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        android:clickable="true"
+        android:contentDescription="@string/settings"
+        android:focusable="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/settings_icon"
-        android:contentDescription="@string/settings" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/settings_icon" />
 
     <EditText
         android:id="@+id/editTextTextPersonName6"
         android:layout_width="wrap_content"
         android:layout_height="50sp"
+        android:layout_marginTop="11dp"
         android:ems="14"
         android:inputType="textPersonName"
         android:text="@string/notizen"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="322dp" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/speichernButton"
         android:layout_width="wrap_content"
         android:layout_height="50sp"
+        android:layout_marginTop="11dp"
         android:text="@string/speichern"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="293dp"
-        tools:layout_editor_absoluteY="322dp" />
+        app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName6"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:layout_width="411dp"
