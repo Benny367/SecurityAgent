@@ -1,10 +1,18 @@
 package com.example.securityagent;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.hardware.Camera;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +29,7 @@ import java.lang.reflect.Type;
 import json.Benutzer;
 import json.Utils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private ImageView kreisZahl1;
     private ImageView kreisZahl2;
@@ -45,11 +53,24 @@ public class MainActivity extends AppCompatActivity {
 
     private Benutzer aktuellerBenutzer;
 
+    private ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pwText = findViewById(R.id.textAnmeldenId);
+        imageView = findViewById(R.id.imageView2);
+
+        //Anfrage für Kamera Erlaubnis
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[] {
+                            Manifest.permission.CAMERA
+                    },
+                    100);
+        }
 
         ladeBenutzer();
 
@@ -92,6 +113,10 @@ public class MainActivity extends AppCompatActivity {
             pwText.setText("");
             pwFalschToast.show();
             if(anzAktuelleVersuche >= anzMaxFehlversuche){
+                //Oeffne Kamera
+                Intent oeffneKamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(oeffneKamera, 100);
+
                 fotoGemachtToast.show();
                 anmeldeButton = findViewById(R.id.buttonAnmelden);
                 anmeldeButton.setEnabled(false);
@@ -120,5 +145,15 @@ public class MainActivity extends AppCompatActivity {
         Type type = new TypeToken<Benutzer>(){}.getType();
 
         aktuellerBenutzer = gson.fromJson(json, type);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            assert data != null;
+            Bitmap bild = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(bild);
+        }
     }
 }
