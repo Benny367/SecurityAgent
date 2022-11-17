@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -25,6 +26,9 @@ public class NotizenActivity extends AppCompatActivity {
 
     private Benutzer aktuellerBenutzer;
 
+    //Toasts
+    Toast gespeichertToast;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,8 @@ public class NotizenActivity extends AppCompatActivity {
         settingsButton = findViewById(R.id.settingsButton);
         notizenSpeichernButton = findViewById(R.id.notizenSpeichernButton);
         notizenTextarea = findViewById(R.id.notizenTextarea);
+
+        gespeichertToast = Toast.makeText(this, "Änderungen abgespeichert", Toast.LENGTH_SHORT);
 
         ladeBenutzer();
 
@@ -47,6 +53,7 @@ public class NotizenActivity extends AppCompatActivity {
         notizenSpeichernButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                gespeichertToast.show();
                 updateBenutzer();
             }
         });
