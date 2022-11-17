@@ -14,6 +14,7 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,14 +24,16 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
 import json.Benutzer;
 import json.Utils;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
+    //Zahlentasten
     private ImageView kreisZahl1;
     private ImageView kreisZahl2;
     private ImageView kreisZahl3;
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity{
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[] {
+                    new String[]{
                             Manifest.permission.CAMERA
                     },
                     100);
@@ -75,11 +78,13 @@ public class MainActivity extends AppCompatActivity{
         ladeBenutzer();
 
         SharedPreferences sharedPreferences = getSharedPreferences("benutzerSpeichern", MODE_PRIVATE);
-        if (!aktuellerBenutzer.isAktiv()) {
-            Intent activity = new Intent(this, NotizenActivity.class);
-            startActivity(activity);
+        if (aktuellerBenutzer != null) {
+            if (!aktuellerBenutzer.isAktiv()) {
+                Intent activity = new Intent(this, NotizenActivity.class);
+                startActivity(activity);
+            }
         }
-        if(sharedPreferences.getString("Benutzer", "DEFAULT").equals("DEFAULT")){
+        if (sharedPreferences.getString("Benutzer", "DEFAULT").equals("DEFAULT")) {
             Intent activity = new Intent(this, RegistrierenActivity.class);
             startActivity(activity);
         }
@@ -96,24 +101,26 @@ public class MainActivity extends AppCompatActivity{
         erstelleListener(kreisZahl9, R.id.kreisZahl9AN, "9");
 
         // Benutzer-Attribute initialisieren
-        anzMaxFehlversuche = aktuellerBenutzer.getAnzVersuche();
-        passwort = aktuellerBenutzer.getPasswort();
+        if (aktuellerBenutzer != null) {
+            anzMaxFehlversuche = aktuellerBenutzer.getAnzVersuche();
+            passwort = aktuellerBenutzer.getPasswort();
+        }
 
         // Toasts initialisieren
         pwFalschToast = Toast.makeText(this, "Passwort fehlerhaft", Toast.LENGTH_SHORT);
         fotoGemachtToast = Toast.makeText(this, "Ein Foto von dir wurde gemacht", Toast.LENGTH_SHORT);
     }
 
-    public void anmeldenOnClick(View view){
-        if(pwText.getText().toString().equals(passwort)) {
+    public void anmeldenOnClick(View view) {
+        if (pwText.getText().toString().equals(passwort)) {
             Intent activity = new Intent(this, NotizenActivity.class);
             startActivity(activity);
         } else {
             anzAktuelleVersuche++;
             pwText.setText("");
             pwFalschToast.show();
-            if(anzAktuelleVersuche >= anzMaxFehlversuche){
-                //Oeffne Kamera
+            if (anzAktuelleVersuche >= anzMaxFehlversuche) {
+                //Oeffnet Kamera
                 Intent oeffneKamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(oeffneKamera, 100);
 
@@ -124,7 +131,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public void erstelleListener(ImageView zahl, int viewById, String ausgabe){
+    public void erstelleListener(ImageView zahl, int viewById, String ausgabe) {
         zahl = (ImageView) findViewById(viewById);
         zahl.setClickable(true);
 
@@ -138,15 +145,18 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
-    public void ladeBenutzer(){
+    //Lade Benutzer Einstellungen
+    public void ladeBenutzer() {
         SharedPreferences sharedPreferences = getSharedPreferences("benutzerSpeichern", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Benutzer", null);
-        Type type = new TypeToken<Benutzer>(){}.getType();
+        Type type = new TypeToken<Benutzer>() {
+        }.getType();
 
         aktuellerBenutzer = gson.fromJson(json, type);
     }
 
+    //Setzt gemachte Bild
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
