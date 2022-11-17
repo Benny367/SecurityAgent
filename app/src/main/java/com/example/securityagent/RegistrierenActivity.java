@@ -11,14 +11,16 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import json.Benutzer;
+import model.Benutzer;
 
 public class RegistrierenActivity extends AppCompatActivity {
 
+    // Widgets
     private EditText mailTextRegistrieren;
     private EditText pwTextRegistrieren;
     private EditText pwBestaetigenTextRegistrieren;
 
+    // Toast
     private Toast pwsStimmenNicht;
 
     @Override
@@ -34,18 +36,22 @@ public class RegistrierenActivity extends AppCompatActivity {
         pwsStimmenNicht = Toast.makeText(this, "Passwörter stimmen nicht überein", Toast.LENGTH_SHORT);
     }
 
+    // Methode des Buttons
     public void registrierenOnClick(View view){
         if(pwTextRegistrieren.getText().toString().equals(pwBestaetigenTextRegistrieren.getText().toString())) {
+            // Erstelle Benutzer
             erstelleBenutzer();
             Intent activity = new Intent(this, NotizenActivity.class);
             startActivity(activity);
         } else {
+            // Passwortfeld wird leer
             pwsStimmenNicht.show();
             pwTextRegistrieren.setText("");
             pwBestaetigenTextRegistrieren.setText("");
         }
     }
 
+    // Benutzer wird erstellt und in SharedPreferences gespeichert
     public void erstelleBenutzer(){
         Benutzer b = new Benutzer(3, mailTextRegistrieren.getText().toString(), true, true, pwTextRegistrieren.getText().toString());
         SharedPreferences sharedPreferences = getSharedPreferences("benutzerSpeichern", MODE_PRIVATE);

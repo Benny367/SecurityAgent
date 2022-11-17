@@ -17,18 +17,19 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-import json.Benutzer;
+import model.Benutzer;
 
 public class EinstellungenActivity extends AppCompatActivity {
 
+    // Widgets
     private Switch securityManagerSwitch;
     private Switch lokalSwitch;
-    private Button emailBearbeitenButton;
     private EditText emailTextfield;
     private SeekBar seekBar;
     private Button pwAendernButtonEIN;
     private Button zurueckButton;
 
+    // Benutzer
     private Benutzer aktuellerBenutzer;
 
     @Override
@@ -36,6 +37,7 @@ public class EinstellungenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_einstellungen);
 
+        // Widgets initialisieren
         securityManagerSwitch = findViewById(R.id.securityManagerSwitch);
         lokalSwitch = findViewById(R.id.lokalSwitch);
         emailTextfield = findViewById(R.id.emailTextfield);
@@ -43,32 +45,34 @@ public class EinstellungenActivity extends AppCompatActivity {
         pwAendernButtonEIN = findViewById(R.id.pwAendernButtonEIN);
         zurueckButton = findViewById(R.id.zurueckButton);
 
+        // Benutzer laden
         ladeBenutzer();
 
-        Intent activityNotizen = new Intent(this, NotizenActivity.class);
-        zurueckButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateBenutzer();
-                startActivity(activityNotizen);
-            }
-        });
-
-        Intent activityPWAendern = new Intent(this, PWAendernActivity.class);
-        pwAendernButtonEIN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(activityPWAendern);
-            }
-        });
-
-        securityManagerSwitch.setChecked(getSecurityManagerOnOff());
-        lokalSwitch.setChecked(getLokalSwitchOnOff());
+        // Neue Werte des Benutzers anzeigen
+        securityManagerSwitch.setChecked(aktuellerBenutzer.isAktiv());
+        lokalSwitch.setChecked(aktuellerBenutzer.isLokalSpeichern());
         emailTextfield.setText(aktuellerBenutzer.getEmail());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            seekBar.setMin(3);
+        }
         seekBar.setMax(10);
         seekBar.setProgress(aktuellerBenutzer.getAnzVersuche());
     }
 
+    // Methode des Zueruck-Button
+    public void einstellungenOnClick(){
+        updateBenutzer();
+        Intent activityNotizen = new Intent(this, NotizenActivity.class);
+        startActivity(activityNotizen);
+    }
+
+    // Methode des PasswortsAendern-Button
+    public void passwortAendernOnClick(){
+        Intent activityPWAendern = new Intent(this, PWAendernActivity.class);
+        startActivity(activityPWAendern);
+    }
+
+    // Aktueller Benutzer wird im Attribut aktuellerBenutzer geladen
     public void ladeBenutzer(){
         SharedPreferences sharedPreferences = getSharedPreferences("benutzerSpeichern", MODE_PRIVATE);
         Gson gson = new Gson();
@@ -78,6 +82,7 @@ public class EinstellungenActivity extends AppCompatActivity {
         aktuellerBenutzer = gson.fromJson(json, type);
     }
 
+    // Benutzer wird updated und in SharedPreferences gespeichert
     public void updateBenutzer(){
         SharedPreferences sharedPreferences = getSharedPreferences("benutzerSpeichern", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -91,13 +96,5 @@ public class EinstellungenActivity extends AppCompatActivity {
         String jsonString = gson.toJson(aktuellerBenutzer);
         editor.putString("Benutzer", jsonString);
         editor.apply();
-    }
-
-    public boolean getSecurityManagerOnOff(){
-        return aktuellerBenutzer.isAktiv();
-    }
-
-    public boolean getLokalSwitchOnOff(){
-        return aktuellerBenutzer.isLokalSpeichern();
     }
 }

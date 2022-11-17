@@ -10,10 +10,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,14 +21,13 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 
-import json.Benutzer;
-import json.Utils;
+import model.Benutzer;
 
 public class MainActivity extends AppCompatActivity{
 
+    // Widgets
     private ImageView kreisZahl1;
     private ImageView kreisZahl2;
     private ImageView kreisZahl3;
@@ -42,7 +39,9 @@ public class MainActivity extends AppCompatActivity{
     private ImageView kreisZahl9;
     private Button anmeldeButton;
     private EditText pwText;
+    private ImageView imageView;
 
+    // Werte des Benutzers
     private String passwort;
     private int anzMaxFehlversuche;
     private int anzAktuelleVersuche = 0;
@@ -51,9 +50,9 @@ public class MainActivity extends AppCompatActivity{
     Toast pwFalschToast;
     Toast fotoGemachtToast;
 
+    //
     private Benutzer aktuellerBenutzer;
 
-    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity{
         ladeBenutzer();
 
         SharedPreferences sharedPreferences = getSharedPreferences("benutzerSpeichern", MODE_PRIVATE);
-        if (!aktuellerBenutzer.isAktiv()) {
+        if (!aktuellerBenutzer.isAktiv() || aktuellerBenutzer != null) {
             Intent activity = new Intent(this, NotizenActivity.class);
             startActivity(activity);
         }
@@ -116,6 +115,7 @@ public class MainActivity extends AppCompatActivity{
                 //Oeffne Kamera
                 Intent oeffneKamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(oeffneKamera, 100);
+                oeffneKamera.putExtra("android.intent.extra.quickCapture",true);
 
                 fotoGemachtToast.show();
                 anmeldeButton = findViewById(R.id.buttonAnmelden);
