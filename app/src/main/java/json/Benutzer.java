@@ -6,6 +6,7 @@ public class Benutzer {
     private boolean lokalSpeichern;
     private boolean aktiv;
     private String passwort;
+    private String notizen;
 
     public Benutzer(int anzVersuche, String email, boolean lokalSpeichern, boolean aktiv, String passwort) {
         this.anzVersuche = anzVersuche;
@@ -13,6 +14,7 @@ public class Benutzer {
         this.lokalSpeichern = lokalSpeichern;
         this.aktiv = aktiv;
         this.passwort = passwort;
+        this.notizen = "";
     }
 
     public int getAnzVersuche() {
@@ -55,6 +57,14 @@ public class Benutzer {
         this.passwort = passwort;
     }
 
+    public String getNotizen() {
+        return notizen;
+    }
+
+    public void setNotizen(String notizen) {
+        this.notizen = notizen;
+    }
+
     @Override
     public String toString() {
         return "Benutzer{" +
@@ -63,6 +73,7 @@ public class Benutzer {
                 ", lokalSpeichern=" + lokalSpeichern +
                 ", aktiv=" + aktiv +
                 ", passwort='" + passwort + '\'' +
+                ", notizen='" + notizen + '\'' +
                 '}';
     }
 }

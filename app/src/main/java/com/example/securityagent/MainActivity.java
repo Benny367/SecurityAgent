@@ -51,12 +51,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         pwText = findViewById(R.id.textAnmeldenId);
 
+        ladeBenutzer();
+
         SharedPreferences sharedPreferences = getSharedPreferences("benutzerSpeichern", MODE_PRIVATE);
+        if (!aktuellerBenutzer.isAktiv()) {
+            Intent activity = new Intent(this, NotizenActivity.class);
+            startActivity(activity);
+        }
         if(sharedPreferences.getString("Benutzer", "DEFAULT").equals("DEFAULT")){
             Intent activity = new Intent(this, RegistrierenActivity.class);
             startActivity(activity);
-        } else {
-            ladeBenutzer();
         }
 
         // Buttons mit Zahlen initialisieren
