@@ -87,7 +87,7 @@ public class PWAendernActivity extends AppCompatActivity {
                 String aktuellerWert = textPW.getText().toString();
                 aktuellerWert = aktuellerWert.concat(ausgabe);
                 textPW.setText(aktuellerWert);
-                //sendMail();
+                sendMail();
             }
         });
     }
@@ -125,8 +125,9 @@ public class PWAendernActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_EMAIL, recipientList);
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, message);
+        intent.putExtra(Intent.ACTION_SENDTO, recipientList);
 
         intent.setType("message/rfc822");
-        startActivity(Intent.createChooser(intent, "Choose an email client"));
+        startActivity(intent);
     }
 }
