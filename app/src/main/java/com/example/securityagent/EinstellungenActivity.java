@@ -38,7 +38,6 @@ public class EinstellungenActivity extends AppCompatActivity {
 
         securityManagerSwitch = findViewById(R.id.securityManagerSwitch);
         lokalSwitch = findViewById(R.id.lokalSwitch);
-        emailBearbeitenButton = findViewById(R.id.emailBearbeitenButton);
         emailTextfield = findViewById(R.id.emailTextfield);
         seekBar = findViewById(R.id.seekBar);
         pwAendernButtonEIN = findViewById(R.id.pwAendernButtonEIN);
@@ -46,12 +45,20 @@ public class EinstellungenActivity extends AppCompatActivity {
 
         ladeBenutzer();
 
-        Intent activity = new Intent(this, NotizenActivity.class);
+        Intent activityNotizen = new Intent(this, NotizenActivity.class);
         zurueckButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 updateBenutzer();
-                startActivity(activity);
+                startActivity(activityNotizen);
+            }
+        });
+
+        Intent activityPWAendern = new Intent(this, PWAendernActivity.class);
+        pwAendernButtonEIN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(activityPWAendern);
             }
         });
 
