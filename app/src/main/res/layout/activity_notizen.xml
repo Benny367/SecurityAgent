@@ -59,7 +59,7 @@
         android:layout_height="50sp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:onClick="speichernNotizen"
+        android:onClick="notizenSpeichernOnClick"
         android:text="@string/speichern"
         app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName6"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
