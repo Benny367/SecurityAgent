@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -48,15 +49,18 @@ public class NotizenActivity extends AppCompatActivity {
     }
 
     // Methode des Speichern-Button
-    public void notizenSpeichernOnClick(){
-        Intent einstellungenActivity = new Intent(this, EinstellungenActivity.class);
-        startActivity(einstellungenActivity);
+    public void notizenSpeichernOnClick(View view){
+        updateBenutzer();
+        gespeichertToast.show();
     }
 
     // Methode des Einstellungen-Button
-    public void zahnradOnClick(){
-        gespeichertToast.show();
+    public void zahnradOnClick(View View){
         updateBenutzer();
+        gespeichertToast.show();
+        Intent einstellungenActivity = new Intent(this, EinstellungenActivity.class);
+        startActivity(einstellungenActivity);
+
     }
 
     // Aktueller Benutzer wird im Attribut aktuellerBenutzer geladen

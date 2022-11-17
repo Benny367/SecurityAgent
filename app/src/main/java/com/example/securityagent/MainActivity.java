@@ -28,8 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
-import json.Benutzer;
-import json.Utils;
+import model.Benutzer;
 
 public class MainActivity extends AppCompatActivity {
 

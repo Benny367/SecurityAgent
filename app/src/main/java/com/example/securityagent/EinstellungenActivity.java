@@ -60,14 +60,14 @@ public class EinstellungenActivity extends AppCompatActivity {
     }
 
     // Methode des Zueruck-Button
-    public void einstellungenOnClick(){
+    public void einstellungenOnClick(View view){
         updateBenutzer();
         Intent activityNotizen = new Intent(this, NotizenActivity.class);
         startActivity(activityNotizen);
     }
 
     // Methode des PasswortsAendern-Button
-    public void passwortAendernOnClick(){
+    public void passwortAendernOnClick(View view){
         Intent activityPWAendern = new Intent(this, PWAendernActivity.class);
         startActivity(activityPWAendern);
     }
