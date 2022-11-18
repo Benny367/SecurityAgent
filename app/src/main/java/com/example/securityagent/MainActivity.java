@@ -1,9 +1,12 @@
 package com.example.securityagent;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,11 +23,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.File;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
+import java.nio.file.Paths;
 
 import model.Benutzer;
 
@@ -62,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE},1);
+                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, 1);
             }
         }
         super.onCreate(savedInstanceState);
@@ -169,7 +175,9 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 100) {
             assert data != null;
             bitmap = (Bitmap) data.getExtras().get("data");
-            speichereGallerie();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                speichereGallerie();
+            }
 
             // Schickt Mail
             sendeMail();
@@ -178,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Speichert Bild in der Gallerie
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public void speichereGallerie() {
         try {
             String fileName = "robber" + System.currentTimeMillis() + "_.jpg";
@@ -205,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Schickt E-Mail mit dem Foto des Benutzers
     public void sendeMail() {
-        String[] recipientList = { aktuellerBenutzer.getEmail() };
+        String[] recipientList = {aktuellerBenutzer.getEmail()};
         String subject = "Ein Dieb wollte zuschlagen!";
 
         Intent intent = new Intent(Intent.ACTION_SEND);
