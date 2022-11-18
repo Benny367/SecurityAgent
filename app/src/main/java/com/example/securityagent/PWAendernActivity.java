@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -87,7 +88,6 @@ public class PWAendernActivity extends AppCompatActivity {
                 String aktuellerWert = textPW.getText().toString();
                 aktuellerWert = aktuellerWert.concat(ausgabe);
                 textPW.setText(aktuellerWert);
-                sendMail();
             }
         });
     }
@@ -113,21 +113,5 @@ public class PWAendernActivity extends AppCompatActivity {
         String jsonString = gson.toJson(aktuellerBenutzer);
         editor.putString("Benutzer", jsonString);
         editor.apply();
-    }
-
-    public void sendMail() {
-        String recipientList = aktuellerBenutzer.getEmail();
-        String subject = "Ein Dieb wollte zuschlagen!";
-        String message = "Test1234";
-
-        Intent intent = new Intent(Intent.ACTION_SEND);
-
-        intent.putExtra(Intent.EXTRA_EMAIL, recipientList);
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_TEXT, message);
-        intent.putExtra(Intent.ACTION_SENDTO, recipientList);
-
-        intent.setType("message/rfc822");
-        startActivity(intent);
     }
 }

@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Benutzer aktuellerBenutzer;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             pwText.setText("");
             pwFalschToast.show();
             if (anzAktuelleVersuche >= anzMaxFehlversuche) {
+                //Oeffnet Kamera
                 Intent machBild = new Intent(this, MakePhotoActivity.class);
                 startActivity(machBild);
 
@@ -140,5 +140,19 @@ public class MainActivity extends AppCompatActivity {
         }.getType();
 
         aktuellerBenutzer = gson.fromJson(json, type);
+    }
+
+    // Schickt E-Mail mit dem Foto des Benutzers
+    public void sendeMail() {
+        String recipientList[] = { aktuellerBenutzer.getEmail() };
+        String subject = "Ein Dieb wollte zuschlagen!";
+        String message = "Test1234";
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+
+        intent.putExtra(Intent.EXTRA_EMAIL, recipientList);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, message);
     }
 }
