@@ -132,9 +132,6 @@ public class MainActivity extends AppCompatActivity {
                 fotoGemachtToast.show();
                 anmeldeButton = findViewById(R.id.buttonAnmelden);
                 anmeldeButton.setEnabled(false);
-
-                // Schickt Mail
-                sendeMail();
             }
         }
     }
@@ -173,6 +170,9 @@ public class MainActivity extends AppCompatActivity {
             assert data != null;
             bitmap = (Bitmap) data.getExtras().get("data");
             speichereGallerie();
+
+            // Schickt Mail
+            sendeMail();
         }
 
     }
@@ -205,15 +205,16 @@ public class MainActivity extends AppCompatActivity {
 
     // Schickt E-Mail mit dem Foto des Benutzers
     public void sendeMail() {
-        String recipientList[] = { aktuellerBenutzer.getEmail() };
+        String[] recipientList = { aktuellerBenutzer.getEmail() };
         String subject = "Ein Dieb wollte zuschlagen!";
-        String message = "Test1234";
 
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("message/rfc822");
+        intent.setType("text/plain");
 
         intent.putExtra(Intent.EXTRA_EMAIL, recipientList);
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_TEXT, message);
+
+        startActivity(Intent.createChooser(intent,
+                "Send Email Using: "));
     }
 }
