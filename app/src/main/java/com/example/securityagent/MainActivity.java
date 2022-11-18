@@ -1,17 +1,23 @@
 package com.example.securityagent;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -24,8 +30,10 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 
 import model.Benutzer;
@@ -49,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private int anzMaxFehlversuche;
     private int anzAktuelleVersuche = 0;
 
+    private Bitmap bitmap;
+
     //Toasts
     Toast pwFalschToast;
     Toast fotoGemachtToast;
@@ -57,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE},1);
+            }
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pwText = findViewById(R.id.textAnmeldenId);
@@ -107,8 +122,8 @@ public class MainActivity extends AppCompatActivity {
             pwFalschToast.show();
             if (anzAktuelleVersuche >= anzMaxFehlversuche) {
                 //Oeffnet Kamera
-                Intent machBild = new Intent(this, MakePhotoActivity.class);
-                startActivity(machBild);
+                Intent oeffneKamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityIfNeeded(oeffneKamera, 100);
 
                 fotoGemachtToast.show();
                 anmeldeButton = findViewById(R.id.buttonAnmelden);
@@ -140,6 +155,44 @@ public class MainActivity extends AppCompatActivity {
         }.getType();
 
         aktuellerBenutzer = gson.fromJson(json, type);
+    }
+
+    //Setzt gemachtes Bild
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            assert data != null;
+            bitmap = (Bitmap) data.getExtras().get("data");
+            speichereGallerie();
+        }
+
+    }
+
+    //Speichert Bild in der Gallerie
+    public void speichereGallerie() {
+        try {
+            String fileName = "robber" + System.currentTimeMillis() + "_.jpg";
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.DISPLAY_NAME, "robber");
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/");
+                values.put(MediaStore.MediaColumns.IS_PENDING, 1);
+            } else {
+                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+                File file = new File(directory, fileName);
+                values.put(MediaStore.MediaColumns.DATA, file.getAbsolutePath());
+            }
+            Uri uri = this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            try (OutputStream output = this.getContentResolver().openOutputStream(uri)) {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
+                output.flush();
+            }
+            Toast.makeText(this, "Photo saved to Gallery", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.d("EXCEPTION", e.toString());
+        }
     }
 
     // Schickt E-Mail mit dem Foto des Benutzers
