@@ -55,24 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
     private Benutzer aktuellerBenutzer;
 
-    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pwText = findViewById(R.id.textAnmeldenId);
-        imageView = findViewById(R.id.imageView2);
-
-        //Anfrage für Kamera Erlaubnis
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{
-                            Manifest.permission.CAMERA
-                    },
-                    100);
-        }
 
         ladeBenutzer();
 
@@ -119,9 +107,8 @@ public class MainActivity extends AppCompatActivity {
             pwText.setText("");
             pwFalschToast.show();
             if (anzAktuelleVersuche >= anzMaxFehlversuche) {
-                //Oeffnet Kamera
-                Intent oeffneKamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(oeffneKamera, 100);
+                Intent machBild = new Intent(this, MakePhotoActivity.class);
+                startActivity(machBild);
 
                 fotoGemachtToast.show();
                 anmeldeButton = findViewById(R.id.buttonAnmelden);
@@ -153,16 +140,5 @@ public class MainActivity extends AppCompatActivity {
         }.getType();
 
         aktuellerBenutzer = gson.fromJson(json, type);
-    }
-
-    //Setzt gemachte Bild
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100) {
-            assert data != null;
-            Bitmap bild = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(bild);
-        }
     }
 }
