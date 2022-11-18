@@ -1,38 +1,28 @@
 package com.example.securityagent;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 
@@ -40,7 +30,7 @@ import model.Benutzer;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Zahlentasten
+    // Widgets
     private ImageView kreisZahl1;
     private ImageView kreisZahl2;
     private ImageView kreisZahl3;
@@ -53,16 +43,19 @@ public class MainActivity extends AppCompatActivity {
     private Button anmeldeButton;
     private EditText pwText;
 
+    // Daten des Benutzers
     private String passwort;
     private int anzMaxFehlversuche;
     private int anzAktuelleVersuche = 0;
 
+    // Bitmap für das Bild
     private Bitmap bitmap;
 
     //Toasts
     Toast pwFalschToast;
     Toast fotoGemachtToast;
 
+    // Benutzer
     private Benutzer aktuellerBenutzer;
 
     @Override
@@ -76,8 +69,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         pwText = findViewById(R.id.textAnmeldenId);
 
+        // Benutzer laden
         ladeBenutzer();
 
+        // Abfrage, ob der Agent aktiv ist
         SharedPreferences sharedPreferences = getSharedPreferences("benutzerSpeichern", MODE_PRIVATE);
         if (aktuellerBenutzer != null) {
             if (!aktuellerBenutzer.isAktiv()) {
@@ -85,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(activity);
             }
         }
+
+        // Abfrage, ob ein Benutzer existiert
         if (sharedPreferences.getString("Benutzer", "DEFAULT").equals("DEFAULT")) {
             Intent activity = new Intent(this, RegistrierenActivity.class);
             startActivity(activity);
@@ -112,26 +109,37 @@ public class MainActivity extends AppCompatActivity {
         fotoGemachtToast = Toast.makeText(this, "Ein Foto von dir wurde gemacht", Toast.LENGTH_SHORT);
     }
 
+    // Methode des Anmelden-Button
     public void anmeldenOnClick(View view) {
+        // Abfrage, ob Passwort stimmt
         if (pwText.getText().toString().equals(passwort)) {
             Intent activity = new Intent(this, NotizenActivity.class);
             startActivity(activity);
         } else {
+
+            // Textfeld wird zurückgesetzt
             anzAktuelleVersuche++;
             pwText.setText("");
+            // Toast
             pwFalschToast.show();
+            // Abfrage, ob er schon genug Versuche hatte
             if (anzAktuelleVersuche >= anzMaxFehlversuche) {
-                //Oeffnet Kamera
+                //Öffnet Kamera
                 Intent oeffneKamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityIfNeeded(oeffneKamera, 100);
 
+                // Toast & Anmeldefunktion wird nicht verfügbar gemacht
                 fotoGemachtToast.show();
                 anmeldeButton = findViewById(R.id.buttonAnmelden);
                 anmeldeButton.setEnabled(false);
+
+                // Schickt Mail
+                sendeMail();
             }
         }
     }
 
+    // Listener für Zahlenfelder
     public void erstelleListener(ImageView zahl, int viewById, String ausgabe) {
         zahl = (ImageView) findViewById(viewById);
         zahl.setClickable(true);
@@ -146,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //Lade Benutzer Einstellungen
+    // Aktueller Benutzer wird im Attribut aktuellerBenutzer geladen
     public void ladeBenutzer() {
         SharedPreferences sharedPreferences = getSharedPreferences("benutzerSpeichern", MODE_PRIVATE);
         Gson gson = new Gson();
