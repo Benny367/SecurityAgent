@@ -3,7 +3,6 @@ package com.example.securityagent;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -175,9 +174,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 100) {
             assert data != null;
             bitmap = (Bitmap) data.getExtras().get("data");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                speichereGallerie();
-            }
+            speichereGallerie();
 
             // Schickt Mail
             sendeMail();
@@ -186,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Speichert Bild in der Gallerie
-    @RequiresApi(api = Build.VERSION_CODES.Q)
     public void speichereGallerie() {
         try {
             String fileName = "robber" + System.currentTimeMillis() + "_.jpg";
